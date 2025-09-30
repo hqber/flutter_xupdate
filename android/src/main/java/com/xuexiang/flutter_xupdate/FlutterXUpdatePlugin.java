@@ -25,7 +25,6 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
-import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 /**
  * FlutterXUpdatePlugin
@@ -52,13 +51,6 @@ public class FlutterXUpdatePlugin implements FlutterPlugin, ActivityAware, Metho
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
         mMethodChannel.setMethodCallHandler(null);
         mMethodChannel = null;
-    }
-
-    public FlutterXUpdatePlugin initPlugin(MethodChannel methodChannel, Registrar registrar) {
-        mMethodChannel = methodChannel;
-        mApplication = (Application) registrar.context().getApplicationContext();
-        mActivity = new WeakReference<>(registrar.activity());
-        return this;
     }
 
     @Override
@@ -292,10 +284,5 @@ public class FlutterXUpdatePlugin implements FlutterPlugin, ActivityAware, Metho
     @Override
     public void onDetachedFromActivity() {
         mActivity = null;
-    }
-
-    public static void registerWith(Registrar registrar) {
-        final MethodChannel channel = new MethodChannel(registrar.messenger(), PLUGIN_NAME);
-        channel.setMethodCallHandler(new FlutterXUpdatePlugin().initPlugin(channel, registrar));
     }
 }
